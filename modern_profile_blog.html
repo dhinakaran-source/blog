@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC Analyst Journey | Cybersecurity Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0e27;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            z-index: -1;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: 40px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.2);
+        }
+
+        .slide {
+            display: none;
+            background: rgba(26, 31, 58, 0.9);
+            padding: 60px 40px;
+            text-align: center;
+            min-height: 400px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-icon {
+            font-size: 6em;
+            margin-bottom: 20px;
+        }
+
+        .slide h2 {
+            color: #00ff41;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .slide p {
+            color: #b0b0b0;
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .slide-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 255, 65, 0.2);
+            color: #00ff41;
+            border: 2px solid rgba(0, 255, 65, 0.5);
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .slide-nav:hover {
+            background: rgba(0, 255, 65, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .prev {
+            left: 20px;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .next {
+            right: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .slide-dots {
+            text-align: center;
+            padding: 20px;
+            background: rgba(26, 31, 58, 0.9);
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 8px;
+            background-color: rgba(0, 255, 65, 0.3);
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(0, 255, 65, 0.5);
+        }
+
+        .dot.active, .dot:hover {
+            background-color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: 20px;
+            border: 2px solid rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00ff41, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #00ff41;
+            opacity: 0.8;
+        }
+
+        .profile-card {
+            background: rgba(26, 31, 58, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff41 0%, #00d4ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            flex-shrink: 0;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(0, 255, 65, 0.8); }
+        }
+
+        .profile-info h2 {
+            color: #00ff41;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .profile-info p {
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .skills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: rgba(0, 255, 65, 0.1);
+            color: #00ff41;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .blog-card {
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 65, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff41;
+            box-shadow: 0 15px 40px rgba(0, 255, 65, 0.3);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            border-bottom: 2px solid rgba(0, 255, 65, 0.3);
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-content h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .blog-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .blog-content p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #00ff41;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .read-more::after {
+            content: ' →';
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .read-more:hover::after {
+            transform: translateX(5px);
+        }
+
+        footer {
+            text-align: center;
+            color: #666;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .skills {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="container">
+        <header>
+            <h1>🛡️ SOC Analyst Journey</h1>
+            <p>Aspiring Cybersecurity Professional | College Student</p>
+        </header>
+
+        <div class="slideshow-container">
+            <div class="slide active">
+                <div class="slide-icon">🎯</div>
+                <h2>Welcome to My Cybersecurity Journey</h2>
+                <p>Follow my path from college student to SOC Analyst. Documenting every challenge, certification, and breakthrough in the world of cybersecurity.</p>
+            </div>
+
+            <div class="slide">
+                <div class="slide-icon">🔐</div>
+                <h2>Building Defense Skills</h2>
+                <p>Learning threat detection, incident response, and security monitoring. Hands-on experience with SIEM tools, log analysis, and real-world security scenarios.</p>
+            </div>
+
+            <div class="slide">
+                <div class="slide-icon">🚀</div>
+                <h2>Road to SOC Analyst</h2>
+                <p>Pursuing certifications, mastering security tools, and gaining practical experience through CTFs and home labs. The dream is becoming reality, one skill at a time.</p>
+            </div>
+
+            <div class="slide">
+                <div class="slide-icon">💡</div>
+                <h2>Join My Learning Community</h2>
+                <p>Share knowledge, exchange insights, and grow together. Whether you're starting out or already in the field, let's build a safer digital world together.</p>
+            </div>
+
+            <button class="slide-nav prev" onclick="changeSlide(-1)">❮</button>
+            <button class="slide-nav next" onclick="changeSlide(1)">❯</button>
+        </div>
+
+        <div class="slide-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-img">🔐</div>
+            <div class="profile-info">
+                <h2>About Me</h2>
+                <p>
+                    Hey there! I'm a passionate college student with a dream to become a SOC (Security Operations Center) Analyst. 
+                    This blog is my journey through the world of cybersecurity, where I document my learning, share insights, 
+                    and explore the fascinating realm of threat detection, incident response, and digital defense.
+                </p>
+                <p>
+                    Join me as I navigate through certifications, hands-on labs, CTF challenges, and real-world security concepts 
+                    on my path to becoming a cybersecurity professional!
+                </p>
+                <div class="skills">
+                    <span class="skill-tag">Network Security</span>
+                    <span class="skill-tag">Threat Analysis</span>
+                    <span class="skill-tag">SIEM Tools</span>
+                    <span class="skill-tag">Incident Response</span>
+                    <span class="skill-tag">Malware Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-image">🎯</div>
+                <div class="blog-content">
+                    <h3>My Journey to Becoming a SOC Analyst</h3>
+                    <div class="blog-meta">November 28, 2025</div>
+                    <p>
+                        Why I chose cybersecurity, what drives my passion for threat hunting, and the roadmap 
+                        I'm following to land my dream job in a Security Operations Center.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🔍</div>
+                <div class="blog-content">
+                    <h3>Understanding SIEM: Splunk vs ELK</h3>
+                    <div class="blog-meta">November 25, 2025</div>
+                    <p>
+                        A student's perspective on learning SIEM tools. Comparing Splunk and ELK Stack, 
+                        my hands-on experience, and why these tools are crucial for SOC analysts.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🚨</div>
+                <div class="blog-content">
+                    <h3>My First CTF Experience</h3>
+                    <div class="blog-meta">November 20, 2025</div>
+                    <p>
+                        Lessons learned from participating in my first Capture The Flag competition. 
+                        The challenges I faced, mistakes I made, and how it shaped my security mindset.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">📊</div>
+                <div class="blog-content">
+                    <h3>Building a Home Security Lab</h3>
+                    <div class="blog-meta">November 15, 2025</div>
+                    <p>
+                        Step-by-step guide to setting up a cybersecurity lab on a student budget. 
+                        Virtual machines, network setup, and tools every aspiring SOC analyst should practice with.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🎓</div>
+                <div class="blog-content">
+                    <h3>Security+ Certification Study Guide</h3>
+                    <div class="blog-meta">November 10, 2025</div>
+                    <p>
+                        My preparation strategy for CompTIA Security+. Resources, study schedule, 
+                        practice tests, and tips for students pursuing their first security certification.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-image">🦠</div>
+                <div class="blog-content">
+                    <h3>Introduction to Malware Analysis</h3>
+                    <div class="blog-meta">November 5, 2025</div>
+                    <p>
+                        Diving into the world of malware analysis. Basic techniques, tools I'm learning, 
+                        and why understanding malware is essential for threat detection and incident response.
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 SOC Analyst Journey | Built with passion for cybersecurity 🔒</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex += direction;
+            
+            if (currentSlideIndex >= slides.length) {
+                currentSlideIndex = 0;
+            }
+            if (currentSlideIndex < 0) {
+                currentSlideIndex = slides.length - 1;
+            }
+            
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        function currentSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            slides[currentSlideIndex].classList.remove('active');
+            dots[currentSlideIndex].classList.remove('active');
+            
+            currentSlideIndex = index;
+            
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
+        }
+
+        // Auto-advance slides every 5 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>
